@@ -31,13 +31,6 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug-beta \
     && docker-php-ext-enable xdebug
 
-#memcached support php7
-RUN apt-get install -y libmemcached-dev \
-  && git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
-  && cd /usr/src/php/ext/memcached \
-  && docker-php-ext-configure memcached \
-  && docker-php-ext-install memcached
-
 #COPY php.ini    /usr/local/etc/php/conf.d/
 
 EXPOSE 9000
