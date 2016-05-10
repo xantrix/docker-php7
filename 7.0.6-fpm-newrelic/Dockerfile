@@ -1,8 +1,8 @@
 FROM php:7.0.6-fpm
 
-#new relic repo
-wget -O - https://download.newrelic.com/548C16BF.gpg | sudo apt-key add -
-sudo sh -c 'echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list'
+#Add New Relic repo
+RUN wget -O - https://download.newrelic.com/548C16BF.gpg | apt-key add - && \
+sh -c 'echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list'
 
 RUN \
   apt-get update && \
@@ -31,16 +31,15 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
 
-#memcached support php7
-RUN apt-get install -y libmemcached-dev \
-  && git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
-  && cd /usr/src/php/ext/memcached \
-  && docker-php-ext-configure memcached \
-  && docker-php-ext-install memcached
-
 #COPY php.ini    /usr/local/etc/php/conf.d/
 
-#new relic install
-sudo newrelic-install install
+# Setup environment variables for initializing New Relic
+ENV NR_INSTALL_PHPLIST "/usr/local/bin"
+ENV NR_INSTALL_SILENT 1
+ENV NR_INSTALL_KEY changeme
+ENV NR_APP_NAME "Appname"
+
+# Enabling APM metrics for ${NR_APP_NAME}"
+RUN newrelic-install install
 
 EXPOSE 9000
