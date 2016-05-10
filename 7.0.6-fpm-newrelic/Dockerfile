@@ -39,7 +39,7 @@ RUN apt-get update && apt-get install -y \
 # Setup environment variables for initializing New Relic
 ENV NR_INSTALL_PHPLIST "/usr/local/bin"
 ENV NR_INSTALL_SILENT 1
-ENV NR_INSTALL_KEY changeme
+ENV NR_INSTALL_KEY ""
 ENV NR_APP_NAME "Appname"
 
 # Enabling APM metrics for ${NR_APP_NAME}"
