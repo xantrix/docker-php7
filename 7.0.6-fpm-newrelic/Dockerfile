@@ -2,7 +2,7 @@ FROM php:7.0.6-fpm
 
 #Add New Relic repo
 RUN wget -O - https://download.newrelic.com/548C16BF.gpg | apt-key add - && \
-sh -c 'echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list'
+    echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list
 
 RUN \
   apt-get update && \
