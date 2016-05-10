@@ -1,13 +1,16 @@
 FROM php:7.0.6-fpm
 
-#Add New Relic repo
-RUN wget -O - https://download.newrelic.com/548C16BF.gpg | apt-key add - && \
-    echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list
-
 RUN \
   apt-get update && \
   apt-get install -y \
-  curl wget nano unzip bzip2 locate newrelic-php5
+  curl wget nano unzip bzip2 locate
+
+# Install New Relic daemon
+RUN wget -O - https://download.newrelic.com/548C16BF.gpg | apt-key add - && \
+    echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list
+
+RUN apt-get update && \
+    apt-get -yq install newrelic-php5
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
